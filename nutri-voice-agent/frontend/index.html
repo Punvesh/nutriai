@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nutri Voice Agent</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">NV</div>
+        <div>
+          <div class="title">Nutri Voice Agent</div>
+          <div class="subtitle">Voice -> emotion -> nutrition + wellness guidance</div>
+        </div>
+      </div>
+      <div class="status">
+        <span id="apiStatusDot" class="dot"></span>
+        <span id="apiStatusText">Checking backend...</span>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Speak</h2>
+        <p class="muted">
+          Works best on Chrome/Edge. Web Speech API runs on-device for transcription.
+        </p>
+        <div class="row">
+          <button id="btnStart" class="btn primary">Start</button>
+          <button id="btnStop" class="btn" disabled>Stop</button>
+          <button id="btnAnalyzeText" class="btn ghost" title="Analyze typed text">Analyze text</button>
+        </div>
+        <label class="label" for="textInput">Text input</label>
+        <textarea id="textInput" rows="3" placeholder="Type something like: I'm really tired and stressed"></textarea>
+        <div class="divider"></div>
+        <div class="kvs">
+          <div>
+            <div class="kv-label">Live transcript</div>
+            <div id="liveTranscript" class="kv-value mono muted">...</div>
+          </div>
+          <div>
+            <div class="kv-label">Final transcript</div>
+            <div id="finalTranscript" class="kv-value mono">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Emotion Result</h2>
+        <div class="result">
+          <div class="pill" id="emotionPill">neutral</div>
+          <div class="result-meta">
+            <div class="big" id="confidenceText">0%</div>
+            <div class="muted" id="stressText">Stress: low</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="kv-label">Keywords detected</div>
+        <div id="keywords" class="tags"></div>
+        <div class="divider"></div>
+        <div class="kv-label">All emotion scores</div>
+        <div id="scores" class="scores"></div>
+      </section>
+
+      <section class="card">
+        <h2>Feature Pipeline (Visualization)</h2>
+        <p class="muted">A UI animation that mirrors your paper pipeline stages.</p>
+        <div class="pipeline">
+          <div id="stageText" class="stage">Idle</div>
+          <div class="bars" id="mfccBars" aria-label="MFCC bars"></div>
+          <div class="stages">
+            <div class="stage-chip" data-stage="mfcc">MFCC</div>
+            <div class="stage-chip" data-stage="cnn">CNN</div>
+            <div class="stage-chip" data-stage="bilstm">BiLSTM</div>
+            <div class="stage-chip" data-stage="attention">Attention</div>
+            <div class="stage-chip" data-stage="output">Output</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="figs">
+          <figure>
+            <img id="figArchitecture" src="../assets/architecture.png" alt="Architecture figure" />
+            <figcaption class="muted">Fig.1 architecture (optional)</figcaption>
+          </figure>
+          <figure>
+            <img id="figConfusion" src="../assets/confusion_matrix.png" alt="Confusion matrix figure" />
+            <figcaption class="muted">Fig.2 confusion matrix (optional)</figcaption>
+          </figure>
+          <figure>
+            <img id="figRoc" src="../assets/roc_curve.png" alt="ROC curve figure" />
+            <figcaption class="muted">Fig.3 ROC curve (optional)</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Nutrition + Advice</h2>
+        <div class="cols">
+          <div>
+            <div class="kv-label">Foods to eat</div>
+            <ul id="foodsEat" class="list"></ul>
+          </div>
+          <div>
+            <div class="kv-label">Foods to avoid</div>
+            <ul id="foodsAvoid" class="list"></ul>
+          </div>
+        </div>
+        <div class="cols">
+          <div>
+            <div class="kv-label">Supplements</div>
+            <ul id="supplements" class="list"></ul>
+          </div>
+          <div>
+            <div class="kv-label">Immediate actions</div>
+            <ul id="actions" class="list"></ul>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="kv-label">Health advice</div>
+        <div id="advice" class="advice">—</div>
+        <div class="kv-label">Wellness tip</div>
+        <div id="tip" class="muted">—</div>
+      </section>
+
+      <section class="card">
+        <h2>Session Analytics</h2>
+        <div class="row">
+          <button id="btnSessionSummary" class="btn">Session summary</button>
+          <button id="btnClearSession" class="btn ghost">Clear</button>
+        </div>
+        <div class="charts">
+          <canvas id="chartStress" height="140"></canvas>
+          <canvas id="chartEmotions" height="140"></canvas>
+        </div>
+        <div class="divider"></div>
+        <div class="kv-label">Summary</div>
+        <div id="sessionSummary" class="advice muted">No summary yet.</div>
+      </section>
+    </main>
+
+    <footer class="footer muted">
+      Tip: You can override the backend URL with <span class="mono">?api=http://localhost:8000</span>.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script type="module" src="js/voice.js"></script>
+  </body>
+</html>
+
